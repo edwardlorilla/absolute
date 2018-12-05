@@ -40,6 +40,7 @@ DB_PASSWORD=
 Once finished, clear your server cache, and you're all set to go!
 
 ```
+php artisan storage:link
 php artisan cache:clear
 php artisan migrate:fresh --seed
 php artisan serve
