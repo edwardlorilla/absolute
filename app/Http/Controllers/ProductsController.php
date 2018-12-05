@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Http\Request;
-
+use Carbon\Carbon;
 class ProductsController extends Controller
 {
     /**
@@ -14,7 +14,10 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $model = new Product;
+        /*return Product::with(['expires' => function($q){
+            $q->whereDate('expiry_date', '>', Carbon::parse()->format('Y-m-d '));
+        }])->get();*/
+       $model = new Product;
         $query = [
             'category_id'
         ];
@@ -23,26 +26,20 @@ class ProductsController extends Controller
                 $model = $model->whereIn($column, explode(',', request($column)));
             }
         }
-        $model = $model->with('category')->searchPaginateAndOrder();
+        $model = $model->with(['category', 'medicine'])->searchPaginateAndOrder();
         $columns = [
             [
-                'id' => 'product_id',
-                'name' => 'Product ID'
+                'id' => 'id',
+                'name' => 'MedID'
             ], [
-                'id' => 'name',
-                'name' => 'Name'
+                'id' => 'medicine.name',
+                'name' => 'Generic'
             ], [
                 'id' => 'quantity',
                 'name' => 'Quantity'
             ], [
                 'id' => 'category.name',
                 'name' => 'Category'
-            ], [
-                'id' => 'manufacture_date',
-                'name' => 'Manufacture Date'
-            ], [
-                'id' => 'expiry_date',
-                'name' => 'Expiry Date'
             ]
         ];
         return response()
@@ -52,6 +49,10 @@ class ProductsController extends Controller
             ], 200);
     }
 
+    public function show_request($id)
+    {
+        return \App\Product::whereId($id)->first();
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -60,48 +61,59 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $this->validate($request, [
-            'product_id' => 'required',
-            'name' => 'required',
-            'quantity' => 'required | integer',
-            //'vat' => 'required',
-            'reorder_point' => 'required',
+        $input = $request->validate([
+            'medication' => 'required',
+            'dosage' => 'required',
+            'medicine_id' => 'required',
+            /*'product_id' => 'required',
+            'pr_number' => 'required',
+            'po_number' => 'required',
+            'name' => 'required',*/
+            /*'quantity' => 'required | integer',
+            'vat' => 'required',*/
+//            'reorder_point' => 'required',
             /*'purchase_rate' => 'required',
             'mrp_rate' => 'required',
-            'sale_rate' => 'required',*/
+            'sale_rate' => 'required',
             'manufacture_date' => 'required',
-            'expiry_date' => 'required',
+            'expiry_date' => 'required',*/
             'category_id' => 'required',
             'package_id' => 'required',
-            'rack.weight' => 'required',
-            'rack.rack_id' => 'required',
+           /* 'rack.weight' => 'required',
+            'rack.rack_id' => 'required',*/
             //'discount' => 'required',
-            'packs.item_pack' => 'required',
+           /* 'packs.item_pack' => 'required',
             'packs.item_type' => 'required',
             'packs.sub_item' => 'required',
-            'packs.sub_item_type' => 'required',
+            'packs.sub_item_type' => 'required',*/
         ]);
         $model = Product::updateOrCreate(
             ['id' => $request->id],
-            [
-                'product_id' => $input['product_id'],
-                'name' => $input['name'],
-                'quantity' => $input['quantity'],
-                //'vat' => $input['vat'],
-                'reorder_point' => $input['reorder_point'],
-                /*'purchase_rate' => $input['purchase_rate'],
-                'mrp_rate' => $input['mrp_rate'],
-                'sale_rate' => $input['sale_rate'],*/
-                'manufacture_date' => $input['manufacture_date'],
-                'expiry_date' => $input['expiry_date'],
-                'category_id' => $input['category_id'],
-                'package_id' => $input['package_id'],
-                //'discount' => $input['discount']
-            ]
+            $input
+//            [
+//
+//                /*'product_id' => $input['product_id'],
+//                'pr_number' => $input['pr_number'],
+//                'po_number' => $input['po_number'],
+//                'name' => $input['name'],*/
+//
+//                //'vat' => $input['vat'],
+//                /*'reorder_point' => $input['reorder_point'],
+//
+//                'quantity' => $input['quantity'],
+//                'purchase_rate' => $input['purchase_rate'],
+//                'mrp_rate' => $input['mrp_rate'],
+//                'sale_rate' => $input['sale_rate'],
+//                'manufacture_date' => $input['manufacture_date'],
+//                'expiry_date' => $input['expiry_date'],*/
+//                'category_id' => $input['category_id'],
+//                'package_id' => $input['package_id'],
+//                //'discount' => $input['discount']
+//            ]
 
 
         );
-        $model->rack()->updateOrCreate(
+       /* $model->rack()->updateOrCreate(
             ['id' => array_key_exists('id', $request->rack) ? $input['rack']['id'] : null],
             [
                 'weight' => $input['rack']['weight'],
@@ -115,7 +127,7 @@ class ProductsController extends Controller
                 "sub_item" => $input['packs']['sub_item'],
                 "sub_item_type" => $input['packs']['sub_item_type'],
             ]
-        );
+        );*/
         return response()->json($model, 201);
     }
 
@@ -156,22 +168,19 @@ class ProductsController extends Controller
                 'name' => 'Quantity'
             ],
             [
-                'id' => 'product.name',
+                'id' => 'product.medication',
                 'name' => 'Products'
             ],
             [
-                'id' => 'created_at',
-                'name' => 'Create at'
-            ],
-            [
-                'id' => 'updated_at',
-                'name' => 'Updated at'
+                'id' => 'expiry_date',
+                'name' => 'Expiry Date'
             ]
         ];
         return response()
             ->json([
                 'model' => $model,
-                'columns' => $columns
+                'columns' => $columns,
+                'product' => Product::whereId($product->id)->with('package', 'category', 'medicine')->first()
             ]);
 
     }

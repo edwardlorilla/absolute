@@ -11,10 +11,7 @@ return [
             'users' => 'c,r,u,d',
             'profile' => 'r,u'
         ],
-        'doctor' => [
-            'profile' => 'r,u'
-        ],
-        'customer' => [
+        'user' => [
             'profile' => 'r,u'
         ],
     ],

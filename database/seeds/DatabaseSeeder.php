@@ -17,11 +17,34 @@ class DatabaseSeeder extends Seeder
             'name' => 'Tablet',
         ]);
         \App\Category::create([
-            'name' => 'Caplet',
+            'name' => 'Capsule',
         ]);
         \App\Category::create([
             'name' => 'Pill',
         ]);
+        \App\Category::create(['name' => 'Syrup',]);
+        \App\Category::create(['name' => 'Injectable',]);
+        \App\Category::create(['name' => 'Drops',]);
+        \App\Category::create(['name' => 'Suspension',]);
+        \App\Medicine::create(['name' => 'actrapid',]);
+        \App\Medicine::create(['name' => 'acyclovir',]);
+        \App\Medicine::create(['name' => 'allopurino',]);
+        \App\Medicine::create(['name' => 'aluminum magnesium',]);
+        \App\Medicine::create(['name' => 'ambroxol',]);
+        \App\Medicine::create(['name' => 'amlopidine',]);
+        \App\Medicine::create(['name' => 'amoxiciline',]);
+        \App\Medicine::create(['name' => 'ascorbic acid',]);
+        \App\Medicine::create(['name' => 'aspirin',]);
+        \App\Medicine::create(['name' => 'atropine surfate',]);
+        \App\Medicine::create(['name' => 'azithromycin',]);
+        \App\Medicine::create(['name' => 'betamethasone',]);
+        \App\Medicine::create(['name' => 'calcium carbonate',]);
+        \App\Medicine::create(['name' => 'calcuim gluconate',]);
+        \App\Medicine::create(['name' => 'captopril',]);
+        \App\Medicine::create(['name' => 'carbocisteine',]);
+        \App\Medicine::create(['name' => 'cafelexin',]);
+        \App\Medicine::create(['name' => 'cefurocime',]);
+
         \App\Package::create([
             'name' => 'Box',
         ]);
@@ -34,6 +57,24 @@ class DatabaseSeeder extends Seeder
         ]);\App\Rack::create([
             'name' => 'Rack3',
         ]);
+
+
+        \App\Location::create([
+            'name' => 'Agdao',
+        ]);\App\Location::create([
+            'name' => 'Laboratory',
+        ]);\App\Location::create([
+            'name' => 'Talomo Central',
+        ]);
+
+        \App\Unit::create([
+            'name' => 'piece',
+        ]);\App\Unit::create([
+            'name' => 'box/es',
+        ]);\App\Unit::create([
+            'name' => 'jar',
+        ]);
+
         DB::table('settings')->insert(
             array('name' => 'ABSOLUTE')
         );

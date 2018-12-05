@@ -17,14 +17,6 @@ class Supply extends Model
             'name' => 'Name'
         ],
         [
-            'id' => 'quantity',
-            'name' => 'Quantity'
-        ],
-        [
-            'id' => 'purchase_order',
-            'name' => 'Purchase Order'
-        ],
-        [
             'id' => 'created_at',
             'name' => 'Create at'
         ],
@@ -34,26 +26,44 @@ class Supply extends Model
         ]
     ];
     public $fillable = [
-        'supply_id',
         'name',
+        'type',
+        'description',
+        'completed',
         'disabled',
-        'quantity',
-        'purchase_order',
-        'vat',
-        'purchase_rate',
-        'discount',
-        'mrp_rate',
-        'sale_rate',
         'reorder_point'
     ];
-    /**
-     * App\Post::find(1)->tracks;
-     *insert - auth()->user()->tracks()->save(new Announcement($validateData));
-     *update - auth()->user()->tracks()->where('id', id)->update($validateData);
-     *delete - auth()->user()->tracks()->where('id', id)->delete();
-     */
+    protected $appends = ['quantity'];
+    public function getQuantityAttribute()
+    {
+        $supply_transactions =  $this->tracks()->get();
+        return $supply_transactions->reduce(function ($sum, $transaction) {
+            return  $transaction->completed ?  $transaction->type? $sum += $transaction->check : $sum -= $transaction->check : $sum;
+        }, 0);
+    }
+    public function pending()
+    {
+        return $this->morphMany(Pending::class, 'subject');
+    }
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
+
     public function tracks()
     {
         return $this->hasMany(Track::class);
+    }
+    public function requisitions()
+    {
+        return $this->belongsToMany(Requisitions::class);
+    }
+    public function orders()
+    {
+        return $this->morphMany(Order::class, 'subject');
     }
 }

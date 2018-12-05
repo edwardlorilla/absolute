@@ -28,10 +28,7 @@ class UploadController extends Controller
         $manager = new ImageManager();
         $hash = '';
         if ($file = $request->file('file')) {
-            if (!(empty($request->photo))) {
-                unlink(public_path() . '/storage/images/' . $request->photo);
 
-            }
             $resize = $manager->make($file->getRealPath())->fit(100)->encode('jpg');
             $hash = md5($resize->__toString());
             $path = "storage/images/{$hash}.jpg";

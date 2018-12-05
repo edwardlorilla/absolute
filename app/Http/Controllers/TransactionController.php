@@ -14,7 +14,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $model = Transaction::with('user', 'product')->searchPaginateAndOrder();
+        $model = Transaction::with('user', 'product.medicine')->searchPaginateAndOrder();
         $columns = [
             [
                 'id' => 'id',
@@ -33,12 +33,12 @@ class TransactionController extends Controller
                 'name' => 'Quantity'
             ],
             [
-                'id' => 'product.name',
+                'id' => 'product.medicine.name',
                 'name' => 'Products'
             ],
             [
-                'id' => 'created_at',
-                'name' => 'Create at'
+                'id' => 'product.dosage',
+                'name' => 'Dosage'
             ],
             [
                 'id' => 'updated_at',

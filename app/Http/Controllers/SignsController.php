@@ -28,9 +28,13 @@ class SignsController extends Controller
         $this->validate($request, [
             'request_id' => 'required',
             'file' => 'file',
+            'photo' => ''
         ]);
         $input = $request->all();
         if ($file = $request->file('file')) {
+            if (!(empty($request->photo))) {
+                unlink(public_path() . '/storage/images/' . $request->photo);
+            }
             $name = time() . $file->getClientOriginalName();
             $file->move('storage/images', $name);
             $input['file'] = $name;

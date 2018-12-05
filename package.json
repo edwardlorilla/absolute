@@ -29,6 +29,7 @@
         "vue-data-tables": "^3.4.2",
         "vue-print-nb": "^1.0.3",
         "vue-router": "^3.0.1",
+        "vue-router-user-roles": "^0.1.9",
         "vue-signature": "^2.2.2"
     }
 }

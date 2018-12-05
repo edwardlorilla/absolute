@@ -7,7 +7,13 @@ use App\Helper\DataViewer;
 class Transaction extends Model
 {
     use DataViewer;
-    protected $fillable = ['out_quantity', 'product_id', 'user_id', 'type'];
+    /*protected static function boot(){
+        parent::boot();
+        static::created(function ($transaction) {
+
+        });
+    }*/
+    protected $fillable = ['completed', 'purchaseorder_id', 'out_quantity', 'product_id', 'user_id', 'type', 'expiry_date'];
 
     public static $columns = [
 
@@ -20,13 +26,20 @@ class Transaction extends Model
             'name' => 'Type'
         ],
         [
-            'id' => 'user_id',
+            'id' => 'user.name',
             'name' => 'Users'
         ],
-
         [
-            'id' => 'created_at',
-            'name' => 'Create at'
+            'id' => 'out_quantity',
+            'name' => 'Quantity'
+        ],
+        [
+            'id' => 'product.medicine.name',
+            'name' => 'Products'
+        ],
+        [
+            'id' => 'product.dosage',
+            'name' => 'Dosage'
         ],
         [
             'id' => 'updated_at',
@@ -46,5 +59,17 @@ class Transaction extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function purchaseorder()
+    {
+        return $this->belongsTo(Purchaseorder::class);
+    }
+    public function orders()
+    {
+        return $this->morphMany(Order::class, 'subject');
+    }
+    public function pending()
+    {
+        return $this->morphMany(Pending::class, 'subject');
     }
 }

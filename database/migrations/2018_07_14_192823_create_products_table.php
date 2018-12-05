@@ -15,18 +15,19 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('product_id');
-            $table->string('name', 30);
+//            $table->string('po_number', 100)->nullable();
+//            $table->string('pr_number', 100)->nullable();
+//            $table->integer('product_id');
+            $table->string('medication', 100);
+            $table->string('dosage', 100);
+//            $table->string('name', 30);
             $table->boolean('disabled')->default(false);
-            $table->integer('quantity')->nullable();
-            $table->integer('vat')->nullable();
-            $table->double('purchase_rate')->nullable();
-            $table->double('discount')->nullable();
-            $table->double('mrp_rate')->nullable();
-            $table->double('sale_rate')->nullable();
-            $table->integer('reorder_point')->unsigned();
-            $table->string('manufacture_date', 30);
-            $table->string('expiry_date', 30);
+//            $table->integer('vat')->nullable();
+//            $table->double('purchase_rate')->nullable();
+//            $table->double('discount')->nullable();
+//            $table->double('mrp_rate')->nullable();
+//            $table->double('sale_rate')->nullable();
+//            $table->integer('reorder_point')->unsigned();
             $table->integer('package_id')->unsigned()->nullable();
             $table->integer('category_id')->unsigned()->nullable();
             $table->foreign('category_id')->references('id')->on('categories');
@@ -35,8 +36,8 @@ class CreateProductsTable extends Migration
         });
         Schema::table('packs', function($table)
         {
-            $table->unsignedInteger('product_id');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+//            $table->unsignedInteger('product_id');
+//            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
 
     }

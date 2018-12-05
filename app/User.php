@@ -33,7 +33,7 @@ class User extends Authenticatable
         return $this->hasMany(Transaction::class);
     }
     protected $fillable = [
-        'name', 'email', 'password','photo_id', 'address', 'phone'
+        'name', 'email', 'password','photo_id', 'address', 'phone', 'file'
     ];
 
     public static $columns =  [

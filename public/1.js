@@ -6,13 +6,13 @@ webpackJsonp([1],{
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(870)
+  __webpack_require__(931)
 }
-var normalizeComponent = __webpack_require__(16)
+var normalizeComponent = __webpack_require__(10)
 /* script */
-var __vue_script__ = __webpack_require__(872)
+var __vue_script__ = __webpack_require__(933)
 /* template */
-var __vue_template__ = __webpack_require__(873)
+var __vue_template__ = __webpack_require__(934)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -52,17 +52,17 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 870:
+/***/ 931:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(871);
+var content = __webpack_require__(932);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(61)("4fa0dc4e", content, false, {});
+var update = __webpack_require__(98)("4fa0dc4e", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -79,26 +79,67 @@ if(false) {
 
 /***/ }),
 
-/***/ 871:
+/***/ 932:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(23)(false);
+exports = module.exports = __webpack_require__(33)(false);
 // imports
 
 
 // module
-exports.push([module.i, "\nfieldset {\n    border: 1px solid #c0c4cc;\n    max-width: 500px;\n    padding: 16px;\n}\nlegend {\n    color: #606266;\n    background-color: #c0c4cc;\n    padding: 5px 10px;\n    border-radius: 0;\n    border: 0;\n    font-size: 14px;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 872:
+/***/ 933:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -326,7 +367,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             form: {
+                dosage: '',
+                medication: '',
+                medicine_id: '',
                 product_id: '',
+                po_number: '',
+                pr_number: '',
                 name: '',
                 quantity: '',
                 vat: '',
@@ -354,7 +400,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             packages: [],
             isDisabled: false,
             labelPosition: 'left',
-            errors: []
+            errors: [],
+            medicines: [],
+            loading: false
         };
     },
 
@@ -408,6 +456,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        search_medicine: function search_medicine(query) {
+            var vm = this;
+
+            if (query !== '') {
+                vm.loading = true;
+                vm.onSearch(query, vm);
+            } else {
+                vm.loading = false;
+                vm.medicines = [];
+            }
+        },
+
+        onSearch: _.debounce(function (query, vm) {
+            vm.loading = true;
+            axios.get('/api/search/medicines?search=' + query).then(function (q) {
+                vm.loading = false;
+                vm.medicines = q.data.map(function (item) {
+                    return { value: item, label: item.name };
+                });
+            }).catch(function () {
+                vm.loading = false;
+            });
+        }, 350),
         onSubmit: function onSubmit() {
             var vm = this;
             vm.isDisabled = true;
@@ -429,7 +500,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 873:
+/***/ 934:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -439,13 +510,7 @@ var render = function() {
   return _c("div", { staticClass: "row" }, [
     _c("div", { staticClass: "col-lg-12" }, [
       _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("h5", { staticClass: "m-0" }, [
-            _vm._v(
-              _vm._s(_vm.$route.meta.type) + " " + _vm._s(_vm.$route.meta.title)
-            )
-          ])
-        ]),
+        _vm._m(0),
         _vm._v(" "),
         _c(
           "div",
@@ -457,7 +522,6 @@ var render = function() {
                 ref: "form",
                 attrs: {
                   "label-position": _vm.labelPosition,
-                  size: "mini",
                   "label-width": "160px",
                   model: _vm.form
                 },
@@ -472,7 +536,7 @@ var render = function() {
                 _c("div", { staticClass: "row" }, [
                   _c(
                     "div",
-                    { staticClass: "col-lg-4" },
+                    { staticClass: "col-lg-6" },
                     [
                       _c(
                         "el-form-item",
@@ -480,22 +544,119 @@ var render = function() {
                           class: _vm.errors.product_id
                             ? "is-error is-required"
                             : "",
-                          attrs: { label: "Product ID" }
+                          attrs: { label: "Generic" }
+                        },
+                        [
+                          _c(
+                            "el-select",
+                            {
+                              staticStyle: { width: "100%" },
+                              attrs: {
+                                filterable: "",
+                                remote: "",
+                                placeholder: "Enter Medicine Name",
+                                "remote-method": _vm.search_medicine,
+                                loading: _vm.loading
+                              },
+                              model: {
+                                value: _vm.form.medicine_id,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "medicine_id", $$v)
+                                },
+                                expression: "form.medicine_id"
+                              }
+                            },
+                            _vm._l(_vm.medicines, function(item, index) {
+                              return _c("el-option", {
+                                key: index,
+                                attrs: {
+                                  label: item.label,
+                                  value: item.value.id
+                                }
+                              })
+                            })
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.errors.medicine_id, function(error) {
+                            return _vm.errors.medicine_id
+                              ? _c(
+                                  "div",
+                                  { staticClass: "el-form-item__error" },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(error) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          })
+                        ],
+                        2
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "el-form-item",
+                        {
+                          class: _vm.errors.medication
+                            ? "is-error is-required"
+                            : "",
+                          attrs: { label: "Medication" }
+                        },
+                        [
+                          _c("el-input", {
+                            attrs: { required: "" },
+                            model: {
+                              value: _vm.form.medication,
+                              callback: function($$v) {
+                                _vm.$set(_vm.form, "medication", $$v)
+                              },
+                              expression: "form.medication"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm._l(_vm.errors.medication, function(error) {
+                            return _vm.errors.medication
+                              ? _c(
+                                  "div",
+                                  { staticClass: "el-form-item__error" },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(error) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          })
+                        ],
+                        2
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "el-form-item",
+                        {
+                          class: _vm.errors.dosage
+                            ? "is-error is-required"
+                            : "",
+                          attrs: { label: "Dosage" }
                         },
                         [
                           _c("el-input", {
                             attrs: { type: "number", required: "" },
                             model: {
-                              value: _vm.form.product_id,
+                              value: _vm.form.dosage,
                               callback: function($$v) {
-                                _vm.$set(_vm.form, "product_id", $$v)
+                                _vm.$set(_vm.form, "dosage", $$v)
                               },
-                              expression: "form.product_id"
+                              expression: "form.dosage"
                             }
                           }),
                           _vm._v(" "),
-                          _vm._l(_vm.errors.product_id, function(error) {
-                            return _vm.errors.product_id
+                          _vm._l(_vm.errors.dosage, function(error) {
+                            return _vm.errors.dosage
                               ? _c(
                                   "div",
                                   { staticClass: "el-form-item__error" },
@@ -519,12 +680,13 @@ var render = function() {
                           class: _vm.errors.category_id
                             ? "is-error is-required"
                             : "",
-                          attrs: { label: "Category" }
+                          attrs: { label: "Form" }
                         },
                         [
                           _c(
                             "el-select",
                             {
+                              staticStyle: { width: "100%" },
                               model: {
                                 value: _vm.form.category_id,
                                 callback: function($$v) {
@@ -570,329 +732,16 @@ var render = function() {
                       _c(
                         "el-form-item",
                         {
-                          class: _vm.errors.item_pack
+                          class: _vm.errors.category_id
                             ? "is-error is-required"
                             : "",
-                          attrs: { label: "No. of Items in Pack" }
-                        },
-                        [
-                          _c(
-                            "el-col",
-                            { attrs: { span: 11 } },
-                            [
-                              _c("el-input", {
-                                attrs: { required: "" },
-                                model: {
-                                  value: _vm.form.packs.item_pack,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.form.packs, "item_pack", $$v)
-                                  },
-                                  expression: "form.packs.item_pack"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "el-col",
-                            { staticClass: "line", attrs: { span: 2 } },
-                            [_vm._v("-")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "el-col",
-                            { attrs: { span: 11 } },
-                            [
-                              _c(
-                                "el-select",
-                                {
-                                  model: {
-                                    value: _vm.form.packs.item_type,
-                                    callback: function($$v) {
-                                      _vm.$set(_vm.form.packs, "item_type", $$v)
-                                    },
-                                    expression: "form.packs.item_type"
-                                  }
-                                },
-                                _vm._l(_vm.packages, function(
-                                  package,
-                                  index,
-                                  key
-                                ) {
-                                  return _c("el-option", {
-                                    key: key,
-                                    attrs: {
-                                      label: package.name,
-                                      value: package.id
-                                    }
-                                  })
-                                })
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _vm._l(_vm.errors.item_pack, function(error) {
-                            return _vm.errors.item_pack
-                              ? _c(
-                                  "div",
-                                  { staticClass: "el-form-item__error" },
-                                  [
-                                    _vm._v(
-                                      "\n                                    " +
-                                        _vm._s(error) +
-                                        "\n                                "
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
-                          })
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "el-form-item",
-                        {
-                          class: _vm.errors.sub_item
-                            ? "is-error is-required"
-                            : "",
-                          attrs: { label: "No. of Sub-Item in Item." }
-                        },
-                        [
-                          _c(
-                            "el-col",
-                            { attrs: { span: 11 } },
-                            [
-                              _c("el-input", {
-                                attrs: { required: "" },
-                                model: {
-                                  value: _vm.form.packs.sub_item,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.form.packs, "sub_item", $$v)
-                                  },
-                                  expression: "form.packs.sub_item"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "el-col",
-                            { staticClass: "line", attrs: { span: 2 } },
-                            [_vm._v("-")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "el-col",
-                            { attrs: { span: 11 } },
-                            [
-                              _c(
-                                "el-select",
-                                {
-                                  model: {
-                                    value: _vm.form.packs.sub_item_type,
-                                    callback: function($$v) {
-                                      _vm.$set(
-                                        _vm.form.packs,
-                                        "sub_item_type",
-                                        $$v
-                                      )
-                                    },
-                                    expression: "form.packs.sub_item_type"
-                                  }
-                                },
-                                _vm._l(_vm.packages, function(
-                                  package,
-                                  index,
-                                  key
-                                ) {
-                                  return _c("el-option", {
-                                    key: key,
-                                    attrs: {
-                                      label: package.name,
-                                      value: package.id
-                                    }
-                                  })
-                                })
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _vm._l(_vm.errors.sub_item, function(error) {
-                            return _vm.errors.sub_item
-                              ? _c(
-                                  "div",
-                                  { staticClass: "el-form-item__error" },
-                                  [
-                                    _vm._v(
-                                      "\n                                    " +
-                                        _vm._s(error) +
-                                        "\n                                "
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
-                          })
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "el-form-item",
-                        { attrs: { label: "No. of Items in Pack" } },
-                        [
-                          _c("el-input", {
-                            attrs: { disabled: true, required: "" },
-                            model: {
-                              value: _vm.subItemSubCost,
-                              callback: function($$v) {
-                                _vm.subItemSubCost = $$v
-                              },
-                              expression: "subItemSubCost"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "el-form-item",
-                        {
-                          class: _vm.errors.quantity
-                            ? "is-error is-required"
-                            : "",
-                          attrs: { label: "Quantity" }
-                        },
-                        [
-                          _c("el-input", {
-                            attrs: { required: "" },
-                            model: {
-                              value: _vm.form.quantity,
-                              callback: function($$v) {
-                                _vm.$set(_vm.form, "quantity", $$v)
-                              },
-                              expression: "form.quantity"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm._l(_vm.errors.quantity, function(error) {
-                            return _vm.errors.quantity
-                              ? _c(
-                                  "div",
-                                  { staticClass: "el-form-item__error" },
-                                  [
-                                    _vm._v(
-                                      "\n                                    " +
-                                        _vm._s(error) +
-                                        "\n                                "
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
-                          })
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "el-form-item",
-                        {
-                          class: _vm.errors.reorder_point
-                            ? "is-error is-required"
-                            : "",
-                          attrs: { label: "Re-Order Point" }
-                        },
-                        [
-                          _c("el-input", {
-                            attrs: { required: "" },
-                            model: {
-                              value: _vm.form.reorder_point,
-                              callback: function($$v) {
-                                _vm.$set(_vm.form, "reorder_point", $$v)
-                              },
-                              expression: "form.reorder_point"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm._l(_vm.errors.reorder_point, function(error) {
-                            return _vm.errors.reorder_point
-                              ? _c(
-                                  "div",
-                                  { staticClass: "el-form-item__error" },
-                                  [
-                                    _vm._v(
-                                      "\n                                    " +
-                                        _vm._s(error) +
-                                        "\n                                "
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
-                          })
-                        ],
-                        2
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "col-lg-4" },
-                    [
-                      _c(
-                        "el-form-item",
-                        {
-                          class: _vm.errors.name ? "is-error is-required" : "",
-                          attrs: { label: "Product Name" }
-                        },
-                        [
-                          _c("el-input", {
-                            attrs: { required: "" },
-                            model: {
-                              value: _vm.form.name,
-                              callback: function($$v) {
-                                _vm.$set(_vm.form, "name", $$v)
-                              },
-                              expression: "form.name"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm._l(_vm.errors.name, function(error) {
-                            return _vm.errors.name
-                              ? _c(
-                                  "div",
-                                  { staticClass: "el-form-item__error" },
-                                  [
-                                    _vm._v(
-                                      "\n                                    " +
-                                        _vm._s(error) +
-                                        "\n                                "
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
-                          })
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "el-form-item",
-                        {
-                          class: _vm.errors.package_id
-                            ? "is-error is-required"
-                            : "",
-                          attrs: { label: "Package Name" }
+                          attrs: { label: "Pack Size" }
                         },
                         [
                           _c(
                             "el-select",
                             {
+                              staticStyle: { width: "100%" },
                               model: {
                                 value: _vm.form.package_id,
                                 callback: function($$v) {
@@ -912,94 +761,8 @@ var render = function() {
                             })
                           ),
                           _vm._v(" "),
-                          _vm._l(_vm.errors.package_id, function(error) {
-                            return _vm.errors.package_id
-                              ? _c(
-                                  "div",
-                                  { staticClass: "el-form-item__error" },
-                                  [
-                                    _vm._v(
-                                      "\n                                    " +
-                                        _vm._s(error) +
-                                        "\n                                "
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
-                          })
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "el-form-item",
-                        {
-                          class: _vm.errors.manufacture_date
-                            ? "is-error is-required"
-                            : "",
-                          attrs: { label: "Manufacturing Date" }
-                        },
-                        [
-                          _c("el-input", {
-                            attrs: {
-                              "prefix-icon": "el-icon-date",
-                              type: "date",
-                              required: ""
-                            },
-                            model: {
-                              value: _vm.form.manufacture_date,
-                              callback: function($$v) {
-                                _vm.$set(_vm.form, "manufacture_date", $$v)
-                              },
-                              expression: "form.manufacture_date"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm._l(_vm.errors.manufacture_date, function(error) {
-                            return _vm.errors.manufacture_date
-                              ? _c(
-                                  "div",
-                                  { staticClass: "el-form-item__error" },
-                                  [
-                                    _vm._v(
-                                      "\n                                    " +
-                                        _vm._s(error) +
-                                        "\n                                "
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
-                          })
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "el-form-item",
-                        {
-                          class: _vm.errors.expiry_date
-                            ? "is-error is-required"
-                            : "",
-                          attrs: { label: "Expiry Date" }
-                        },
-                        [
-                          _c("el-input", {
-                            attrs: {
-                              "prefix-icon": "el-icon-date",
-                              type: "date",
-                              required: ""
-                            },
-                            model: {
-                              value: _vm.form.expiry_date,
-                              callback: function($$v) {
-                                _vm.$set(_vm.form, "expiry_date", $$v)
-                              },
-                              expression: "form.expiry_date"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm._l(_vm.errors.expiry_date, function(error) {
-                            return _vm.errors.expiry_date
+                          _vm._l(_vm.errors.category_id, function(error) {
+                            return _vm.errors.category_id
                               ? _c(
                                   "div",
                                   { staticClass: "el-form-item__error" },
@@ -1018,103 +781,7 @@ var render = function() {
                       )
                     ],
                     1
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-lg-4" }, [
-                    _c(
-                      "fieldset",
-                      [
-                        _c("legend", [_vm._v("Rack Entry")]),
-                        _vm._v(" "),
-                        _c(
-                          "el-form-item",
-                          {
-                            class: _vm.errors["rack.weight"]
-                              ? "is-error is-required"
-                              : "",
-                            attrs: { label: "Weight" }
-                          },
-                          [
-                            _c("el-input", {
-                              attrs: { required: "" },
-                              model: {
-                                value: _vm.form.rack.weight,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.form.rack, "weight", $$v)
-                                },
-                                expression: "form.rack.weight"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _vm._l(_vm.errors["rack.weight"], function(error) {
-                              return _vm.errors["rack.weight"]
-                                ? _c(
-                                    "div",
-                                    { staticClass: "el-form-item__error" },
-                                    [
-                                      _vm._v(
-                                        "\n                                        " +
-                                          _vm._s(error) +
-                                          "\n                                    "
-                                      )
-                                    ]
-                                  )
-                                : _vm._e()
-                            })
-                          ],
-                          2
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "el-form-item",
-                          {
-                            class: _vm.errors["rack.rack_id"]
-                              ? "is-error is-required"
-                              : "",
-                            attrs: { label: "Rack Number" }
-                          },
-                          [
-                            _c(
-                              "el-select",
-                              {
-                                model: {
-                                  value: _vm.form.rack.rack_id,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.form.rack, "rack_id", $$v)
-                                  },
-                                  expression: "form.rack.rack_id"
-                                }
-                              },
-                              _vm._l(_vm.racks, function(rack, index, key) {
-                                return _c("el-option", {
-                                  key: key,
-                                  attrs: { label: rack.name, value: rack.id }
-                                })
-                              })
-                            ),
-                            _vm._v(" "),
-                            _vm._l(_vm.errors["rack.rack_id"], function(error) {
-                              return _vm.errors["rack.rack_id"]
-                                ? _c(
-                                    "div",
-                                    { staticClass: "el-form-item__error" },
-                                    [
-                                      _vm._v(
-                                        "\n                                        " +
-                                          _vm._s(error) +
-                                          "\n                                    "
-                                      )
-                                    ]
-                                  )
-                                : _vm._e()
-                            })
-                          ],
-                          2
-                        )
-                      ],
-                      1
-                    )
-                  ])
+                  )
                 ]),
                 _vm._v(" "),
                 _c(
@@ -1126,12 +793,7 @@ var render = function() {
                         attrs: { type: "primary", loading: _vm.isDisabled },
                         on: { click: _vm.onSubmit }
                       },
-                      [
-                        _vm._v(
-                          _vm._s(_vm.$route.meta.type) +
-                            "\n                        "
-                        )
-                      ]
+                      [_vm._v("Save Information\n                        ")]
                     ),
                     _vm._v(" "),
                     _c(
@@ -1158,7 +820,16 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h5", { staticClass: "m-0" }, [_vm._v("Add New Medicine")])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

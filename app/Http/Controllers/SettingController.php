@@ -34,7 +34,7 @@ class SettingController extends Controller
                 unlink(public_path() . '/storage/images/' . $request->photo);
 
             }
-            $resize = $manager->make($file->getRealPath())->fit(100)->encode('jpg');
+            $resize = $manager->make($file->getRealPath())->fit(200)->encode('jpg');
             $hash = md5($resize->__toString());
             $path = "storage/images/{$hash}.jpg";
             $resize->save(public_path($path));

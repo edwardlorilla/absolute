@@ -7,7 +7,7 @@ use App\Helper\DataViewer;
 class Track extends Model
 {
     use DataViewer, RecordActivity;
-    protected $fillable = ['check', 'type'];
+    protected $fillable = ['completed', 'check', 'type', 'supplier_id','requisition_id', 'supply_id', 'receive_id', 'form_type', 'division_id'];
     public static $columns =  [
         [
             'id' => 'check',
@@ -29,5 +29,12 @@ class Track extends Model
     public function supply()
     {
         return $this->belongsTo(Supply::class);
+    }public function receive()
+    {
+        return $this->belongsTo(Receive::class);
+    }
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
     }
 }

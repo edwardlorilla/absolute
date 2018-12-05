@@ -12,16 +12,17 @@ class Request extends Model
             'id' => 'id',
             'name' => 'ID'
         ],
+
         [
+            'id' => 'division.name',
+            'name' => 'Division Station'
+        ],[
             'id' => 'request_date',
             'name' => 'Request Date'
         ],
         [
             'id' => 'request_year_code',
             'name' => 'Request Year Code'
-        ],[
-            'id' => 'remark',
-            'name' => 'Remark'
         ],[
             'id' => 'created_at',
             'name' => 'Create at'
@@ -31,7 +32,7 @@ class Request extends Model
             'name' => 'Updated at'
         ]
     ];
-    protected $fillable = ['customer', 'doctor', 'remark','request_date','request_year_code'];
+    protected $fillable = ['division_id',  'remark','request_date','request_year_code'];
 
     public function transactions(){
         return $this->belongsToMany(Transaction::class);
@@ -39,13 +40,8 @@ class Request extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
-    public function customer(){
-        return $this->belongsTo(User::class, 'customer');
+    public function division(){
+        return $this->belongsTo(Division::class);
     }
-    public function doctor(){
-        return $this->belongsTo(User::class, 'doctor');
-    }
-    public function sign(){
-        return $this->hasOne(Sign::class);
-    }
+
 }

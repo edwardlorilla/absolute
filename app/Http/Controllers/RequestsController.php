@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Request as Requests;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class RequestsController extends Controller
 {
@@ -14,9 +15,9 @@ class RequestsController extends Controller
      */
     public function index()
     {
-        $model = Requests::with([ 'user', 'transactions' => function ($query) {
-            $query->with(['product' => function($q) {
-                $q->select('id', 'quantity', 'name');
+        $model = Requests::with(['user', 'division', 'transactions' => function ($query) {
+            $query->with(['product.medicine' => function ($q) {
+                $q->get();
             }]);
         }])->searchPaginateAndOrder();
         $columns = [
@@ -27,13 +28,13 @@ class RequestsController extends Controller
             [
                 'id' => 'request_date',
                 'name' => 'Request Date'
+            ], [
+                'id' => 'division.name',
+                'name' => 'Division Code'
             ],
             [
                 'id' => 'request_year_code',
                 'name' => 'Request Year Code'
-            ], [
-                'id' => 'remark',
-                'name' => 'Remark'
             ]
         ];
         return response()
@@ -51,34 +52,50 @@ class RequestsController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->all());
+        /*return \App\Transaction::whereDate('expiry_date',  '>', Carbon::parse()->format('Y-m-d'))->orderBy('expiry_date', 'asc')->where(['orders' => function($query){
+            $query->first();
+        }])->first();*/
         $this->validate($request, [
-            "remark" => 'required',
+            "division" => 'required',
             "request_date" => 'required',
             "request_year_code" => 'required',
             "products" => 'required',
         ]);
         $user = auth()->user();
-        $transaction = new \App\Transaction;
         $transactions = [];
         $products = $request->products;
-        for ($i = 0; $i < count($products); ++$i) {
-            $transaction->out_quantity = $products[$i]['out_quantity'];
+        foreach ($products as $product) {
+            $transaction = new \App\Transaction;
+            $transaction->out_quantity = $product['out_quantity'];
             $transaction->type = 0;
             $transaction->user_id = $user->id;
-            $transaction->product_id = $products[$i]['id'];
-            $transaction->product()->where('id', $products[$i]['id'])->decrement('quantity', $products[$i]['out_quantity']);
+            $transaction->product_id = $product['id'];
             $transaction->save();
             $transactions[] = $transaction->id;
-        }
 
-       $requests = $user->requests()->save(new Requests([
-            'remark' => $request->remark,
-            'customer' => $request->customer,
-            'doctor' => $request->doctor,
+            $recipient = \App\Transaction::whereProductId($product['id'])
+                ->whereDate('expiry_date', '>', Carbon::parse()->format('Y-m-d'))
+                ->orderBy('expiry_date', 'asc')
+                ->with(['orders' => function ($query) {
+                    $query->first();
+                }])->first();
+            $receiptment = new \App\Receiptment;
+            $receiptment->product_id = $product['id'];
+            $receiptment->division_id =  $request->division;
+            $receiptment->po_number = $recipient['orders'][0]['po_number'];
+            $receiptment->ris_number = $recipient['orders'][0]['pr_number'];
+            $receiptment->date_release =$request->request_date;
+            $receiptment->date_print = $request->request_date;
+            $receiptment->save();
+        }
+        $requests = $user->requests()->save(new Requests([
+//            'po' => \App\Transaction::whereDate('expiry_date' > Carbon::parse()->format('Y-m-d'))->first(),
+            'division_id' => $request->division,
             'request_date' => $request->request_date,
             'request_year_code' => $request->request_year_code
         ]));
-       $requests->transactions()->attach($transactions);
+        $requests->transactions()->attach($transactions);
 
 
         return response()->json($requests, 201);
@@ -92,9 +109,9 @@ class RequestsController extends Controller
      */
     public function show(Requests $request)
     {
-        $requests = Requests::whereId($request->id)->with(['sign','customer', 'doctor', 'user', 'transactions' => function ($query) {
-            $query->with(['product' => function($q) {
-                $q->with('category', 'package', 'packs');
+        $requests = Requests::whereId($request->id)->with(['division', 'user', 'transactions' => function ($query) {
+            $query->with(['product' => function ($q) {
+                $q->with('category', 'package');
             }]);
         }])->first();
         return response()->json($requests, 200);
@@ -107,14 +124,12 @@ class RequestsController extends Controller
      * @param  \App\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,  \App\Request $requests)
+    public function update(Request $request, \App\Request $requests)
     {
         $this->validate($request, [
-            "remark" => 'required',
             "request_date" => 'required',
             "request_year_code" => 'required',
-            "customer" => 'required',
-            "doctor" => 'required',
+            "division_id" => 'required',
             "products" => 'required',
         ]);
         $user = auth()->user();
@@ -126,14 +141,13 @@ class RequestsController extends Controller
             $transaction->type = 0;
             $transaction->user_id = $user->id;
             $transaction->product_id = $products[$i]['id'];;
-            $transaction->product()->where('id', $products[$i]['id'])->update(['disabled' => false,'quantity' => $products[$i]['quantity']]);
+            $transaction->product()->where('id', $products[$i]['id'])->update(['disabled' => false, 'quantity' => $products[$i]['quantity']]);
             $transaction->save();
 
             $transactions[] = $transaction->id;
         }
         $req = Requests::findOrFail($request->id);
-        $req->customer = $request->customer;
-        $req->doctor = $request->doctor;
+        $req->division_id = $request->patient;
         $req->remark = $request->remark;
         $req->request_date = $request->request_date;
         $req->request_year_code = $request->request_year_code;
@@ -150,6 +164,6 @@ class RequestsController extends Controller
      */
     public function destroy(Requests $request)
     {
-        //
+        $request->delete();
     }
 }
