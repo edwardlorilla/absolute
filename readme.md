@@ -35,7 +35,7 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-### Step 4.
+### Step 3.
 
 Once finished, clear your server cache, and you're all set to go!
 
