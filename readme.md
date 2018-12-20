@@ -16,7 +16,6 @@ Begin by cloning this repository to your machine, and installing all Composer & 
 ```bash
 git@github.com:edwardlorilla/absolute.git
 cd absolute && composer install && npm install
-cd council && composer install
 php artisan key:generate
 mv .env.example .env
 
