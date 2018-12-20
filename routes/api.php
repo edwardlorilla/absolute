@@ -46,9 +46,8 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::post('/products/{product}/check-item', function (Request $request, App\Product $product) {
         $request->validate([
-            "po_number" => "required",
+            "po_number" => "required|unique:orders,po_number",
             "date_delivered" => "required",
-            "pr_number" => "required",
             "quantity" => "required",
             "unit_cost" => "required",
             "expiry_date" => "required",
@@ -70,7 +69,6 @@ Route::middleware(['auth:api'])->group(function () {
             'type' => 'created_purchase_order',
             'source_id' => $request->source_select,
             'po_number' => $request->po_number,
-            'pr_number' => $request->pr_number,
             'date_delivered' => $request->date_delivered
         ]);
         return response()->json($product->transactions()->whereId($transaction->id)->with('user', 'product')->first());
@@ -139,6 +137,15 @@ Route::middleware(['auth:api'])->group(function () {
         $select = new App\Unit;
         if (request()->has('search')) {
             $select = App\Unit::where('name', 'LIKE', '%' . request('search') . "%")->get();
+        }
+        return response()->json($select, 200);
+    });
+    Route::get('/search/users', function () {
+        $select = new App\Unit;
+        if (request()->has('search')) {
+            $select = App\User::whereHas('roles', function ($query) {
+                $query->where('id', 3); // roles name user id
+            })->where('name', 'LIKE', '%' . request('search') . "%")->get();
         }
         return response()->json($select, 200);
     });
@@ -224,6 +231,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/supplies/purchase-order', 'SupplyController@store_purchase_order');
     Route::get('/division/{division}', 'DivisionController@show_division');
     Route::get('/user/notification/{id}', 'UserController@notificationMarkAsRead');
+    Route::post('/orders/validate-checkin', 'OrderController@validateCheckin');
     Route::apiResources([
         '/users' => 'UserController',
         '/packs' => 'PacksController',

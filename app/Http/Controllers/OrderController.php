@@ -23,6 +23,20 @@ class OrderController extends Controller
             ]);
     }
 
+    public function validateCheckin(Request $request)
+    {
+        dd($request->all());
+        $input = $request->validate([
+            'po_number' => 'required|unique:orders,po_number',
+            'quantity_per' => 'required',
+            'product_id' => 'required',
+            'quantity' => 'required',
+            'unit_cost' => 'required',
+            'unit' => 'required',
+            'dispensing_unit' => 'required'
+        ]);
+        return response()->json(200);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -42,11 +56,10 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $orders = $request->validate([
-            'po_number' => 'required',
-            'pr_number' => 'required',
             'source_id' => 'required',
             'date_delivered' => 'required',
-            'data' => 'required|array|min:1'
+            'data' => 'required|array|min:1',
+            'data.*.po_number' => 'distinct',
         ]);
         $user = auth()->user();
         foreach ($orders['data'] as $medicine) {
@@ -62,8 +75,7 @@ class OrderController extends Controller
                 'user_id' => auth()->id(),
                 'type' => 'created_purchase_order',
                 'source_id' => $orders['source_id'],
-                'po_number' => $orders['po_number'],
-                'pr_number' => $orders['pr_number'],
+                'po_number' => $medicine['po_number'],
                 'date_delivered' => $orders['date_delivered']
             ]);
         }

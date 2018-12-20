@@ -7,7 +7,7 @@ use App\Helper\DataViewer;
 class Division extends Model
 {
     use DataViewer;
-    protected $fillable = ['name', 'supply_division', 'station'];
+    protected $fillable = ['name', 'user_id', 'station'];
     public static $columns =  [
 
         [
@@ -23,7 +23,7 @@ class Division extends Model
             'name' => 'Station'
         ],
         [
-            'id' => 'supply_division',
+            'id' => 'user.name',
             'name' => 'Head Of Office'
         ],
     ];
@@ -35,5 +35,10 @@ class Division extends Model
     public function receipts()
     {
         return $this->hasMany(Receiptment::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

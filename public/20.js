@@ -4327,7 +4327,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(998)
 }
-var normalizeComponent = __webpack_require__(10)
+var normalizeComponent = __webpack_require__(13)
 /* script */
 var __vue_script__ = __webpack_require__(1000)
 /* template */

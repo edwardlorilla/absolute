@@ -22,7 +22,7 @@ class CreateReceiptmentsTable extends Migration
             $table->foreign('division_id')->references('id')
                 ->on('divisions')->onDelete('cascade');
             $table->string('po_number');
-            $table->string('ris_number');
+//            $table->string('ris_number');
             $table->string('date_release');
             $table->string('date_print');
 

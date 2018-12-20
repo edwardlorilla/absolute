@@ -4,7 +4,7 @@ webpackJsonp([15],{
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(10)
+var normalizeComponent = __webpack_require__(13)
 /* script */
 var __vue_script__ = __webpack_require__(983)
 /* template */
@@ -52,7 +52,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(10)
+var normalizeComponent = __webpack_require__(13)
 /* script */
 var __vue_script__ = __webpack_require__(879)
 /* template */
@@ -468,7 +468,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 url: '/api/' + (vm.$route.params.id ? vm.$route.meta.url + '/' + vm.$route.params.id : vm.$route.meta.url + '?type=0'),
                 data: vm.form
             }).then(function (response) {
-                vm.$message({ message: response.statusText, type: 'success' });
+                vm.$message({ message: 'Your request of office supply currently under review.', type: 'success' });
                 vm.isDisabled = false;
                 vm.form = {
                     supplies: [],
@@ -618,158 +618,6 @@ var render = function() {
     },
     [
       _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-lg-5" }, [
-          _c("div", { staticClass: "form-group " }, [
-            !_vm.isAddDivision
-              ? _c(
-                  "div",
-                  [
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-sm" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "el-form-item__label",
-                            attrs: { for: "division" }
-                          },
-                          [_vm._v("Division")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-sm text-right" }, [
-                        !_vm.isAddDivision
-                          ? _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-sm btn-link",
-                                attrs: { type: "button" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.isAddDivision = !_vm.isAddDivision
-                                  }
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "Add Division\n                            "
-                                )
-                              ]
-                            )
-                          : _vm._e()
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "el-select",
-                      {
-                        staticStyle: { width: "100%" },
-                        attrs: {
-                          disabled: _vm.selectDivision,
-                          remote: "",
-                          clearable: "",
-                          filterable: "",
-                          placeholder: "Please enter a keyword",
-                          "remote-method": _vm.searchDivision,
-                          "default-first-option": "",
-                          loading: _vm.loadingDivision
-                        },
-                        model: {
-                          value: _vm.form.division,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "division", $$v)
-                          },
-                          expression: "form.division"
-                        }
-                      },
-                      _vm._l(_vm.optionDivision, function(item, index) {
-                        return _c("el-option", {
-                          key: index,
-                          attrs: { label: item.label, value: item.value }
-                        })
-                      })
-                    )
-                  ],
-                  1
-                )
-              : _c("div", [
-                  _c("div", { staticClass: "input-group input-group-sm" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.division_name,
-                          expression: "division_name"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { placeholder: "Division Name", type: "text" },
-                      domProps: { value: _vm.division_name },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.division_name = $event.target.value
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.division_supply,
-                          expression: "division_supply"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        placeholder: "Supply Division Name",
-                        type: "text"
-                      },
-                      domProps: { value: _vm.division_supply },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.division_supply = $event.target.value
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "input-group-append" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-success",
-                          attrs: { type: "button" },
-                          on: { click: _vm.addDivision }
-                        },
-                        [_vm._v("Create Division")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-default",
-                          attrs: { type: "button" },
-                          on: {
-                            click: function($event) {
-                              _vm.isAddDivision = false
-                            }
-                          }
-                        },
-                        [_vm._v("Cancel")]
-                      )
-                    ])
-                  ])
-                ])
-          ])
-        ]),
-        _vm._v(" "),
         _c("div", { staticClass: "col-sm-12" }, [
           _c("h3", [_vm._v("Add Items")]),
           _vm._v(" "),
@@ -907,7 +755,7 @@ var render = function() {
             {
               attrs: {
                 type: "primary",
-                disabled: !(_vm.form.supplies.length && _vm.form.division),
+                disabled: !_vm.form.supplies.length,
                 loading: _vm.isDisabled
               },
               on: { click: _vm.onSubmitRequest }

@@ -42,12 +42,12 @@ class PendingController extends Controller
     public function store(Request $request)
     {
         $input = $this->validate($request, [
-            "division" => 'required',
+//            "division" => '',
             "request_date" => 'required',
             "request_year_code" => 'required',
             "products" => 'required',
         ]);
-        $user = auth()->user();
+        $input['division'] = \App\User::whereId(auth()->id())->with('division')->first()['division']['id'];
 
         $users = \App\User::whereHas('roles', function ($q) {
             $q->where('name', 'superadministrator');
@@ -56,21 +56,21 @@ class PendingController extends Controller
         foreach ($users as $user) {
             $user->notify(new \App\Notifications\Pending(auth()->user(), $input));
         }
-        \App\Product::where('disabled', 1)
-            ->update(['disabled' => 0]);
+        \App\Product::where('disabled', true)
+            ->update(['disabled' => false]);
         return response()->json([], 200);
     }
 
     public function supply(Request $request)
     {
         $input = $request->validate([
-            'division' => 'required',
+//            'division' => 'required',
             'request_date' => '',
             'request_year_code' => 'required',
             'year' => 'required',
             'supplies' => 'required|array|min:1',
         ]);
-
+        $input['division'] = \App\User::whereId(auth()->id())->with('division')->first()['division']['id'];
         $users = \App\User::whereHas('roles', function ($q) {
             $q->where('name', 'superadministrator');
         })->where('id', '!=', auth()->id())->get();
@@ -78,8 +78,8 @@ class PendingController extends Controller
         foreach ($users as $user) {
             $user->notify(new \App\Notifications\PendingSupply(auth()->user(), $input, request()->type == '0' ? 0 : 1));
         }
-        \App\Supply::where('disabled', 1)
-            ->update(['disabled' => 0]);
+        \App\Supply::where('disabled', true)
+            ->update(['disabled' => false]);
         return response()->json([], 200);
     }
 
@@ -147,7 +147,7 @@ class PendingController extends Controller
             $receiptment->product_id = $product['id'];
             $receiptment->division_id =  $request->division;
             $receiptment->po_number = $recipient['orders'][0]['po_number'];
-            $receiptment->ris_number = $recipient['orders'][0]['pr_number'];
+            //$receiptment->ris_number = $recipient['orders'][0]['pr_number'];
             $receiptment->date_release =$request->request_date;
             $receiptment->date_print = $request->request_date;
             $receiptment->save();

@@ -15,9 +15,11 @@ class CreateDivisionsTable extends Migration
     {
         Schema::create('divisions', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+
             $table->string('name', 100);
             $table->string('station', 100);
-            $table->string('supply_division');
             $table->timestamps();
         });
         Schema::table('requests', function (Blueprint $table) {

@@ -67,6 +67,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function division ()
+    {
+        return $this->hasOne(Division::class);
+    }
     public function photo()
     {
         return $this->belongsTo(Photo::class);

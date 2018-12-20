@@ -40,14 +40,16 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
         $input = $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . (int)$request->id,
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $request->id,
+            'password' => 'string|min:6',
             'address' => '',
             'phone' => '',
-            'password' => 'min:6',
             'confirm_password' => 'same:password',
+            'roles' => 'required',
+            'division.name' => 'sometimes|required',
+            'division.station' => 'sometimes|required'
         ]);
         if (trim($request->password) == '') {
             $input = $request->except('password');
@@ -57,10 +59,15 @@ class UserController extends Controller
 
         $model = User::updateOrCreate(
             ['id' => $request->id],
-            $input
-        );
+            $input);
+        if ($request->division['name'] && $request->division['station'] && $model) {
+            \App\Division::updateOrCreate(
+                ['id' => $request->division['id']],
+                ['user_id' => $request->division['user_id'] ? $request->division['user_id'] : $model->id, 'name' => $request->division['name'], 'station' => $request->division['station']
+                ]);
+        }
         if ($request->roles) {
-            $model->syncRoles($request->roles);
+            $model->syncRoles($input['roles']);
         }
         /*if ($request->permissions) {
             $model->syncPermissions($request->permissions);
@@ -85,7 +92,7 @@ class UserController extends Controller
         $user->file = $input['file'];
         $user->save();
         if (!(empty($request->photo))) {
-            if (file_exists(public_path() . '/storage/images/' . $request->photo)){
+            if (file_exists(public_path() . '/storage/images/' . $request->photo)) {
                 unlink(public_path() . '/storage/images/' . $request->photo);
             }
         }
@@ -102,7 +109,7 @@ class UserController extends Controller
     {
         $roles = \App\Role::all();
         $permissions = \App\Permission::all();
-        return response()->json(['user' => User::where('id', $user->id)->with('roles', 'permissions')->first(), 'roles' => $roles, 'permissions' => $permissions], 200);
+        return response()->json(['user' => User::where('id', $user->id)->with('division', 'roles', 'permissions')->first(), 'roles' => $roles, 'permissions' => $permissions], 200);
     }
 
     public function edit(User $user)
@@ -110,15 +117,21 @@ class UserController extends Controller
         return response()->json($user, 200);
     }
 
-    public function notification(User $user){
+    public function notification(User $user)
+    {
         return response()->json($user->unreadNotifications()->paginate());
     }
-    public function markAsRead(){
+
+    public function markAsRead()
+    {
         return response()->json(auth()->user()->notifications()->paginate());
     }
-    public function notificationMarkAsRead($id){
+
+    public function notificationMarkAsRead($id)
+    {
         return response()->json(auth()->user()->unreadNotifications()->whereId($id)->update(['read_at' => now()]));
     }
+
     /**
      * Update the specified resource in storage.
      *

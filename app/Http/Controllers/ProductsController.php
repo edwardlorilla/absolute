@@ -61,10 +61,11 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
+        //'unique:table_name,column1,null,null,column2,'.$request->column2.',column3,check3'
         $input = $request->validate([
-            'medication' => 'required',
-            'dosage' => 'required',
-            'medicine_id' => 'required',
+            'medication' => 'required|unique:products,medication,null,null,dosage,'.$request->dosage.',medicine_id,'.$request->medicine_id,
+            'dosage' => 'required|unique:products,dosage,null,null,medication,'.$request->medication.',medicine_id,'.$request->medicine_id,
+            'medicine_id' => 'required|unique:products,medicine_id,null,null,medication,'.$request->medication.',dosage,'.$request->dosage,
             /*'product_id' => 'required',
             'pr_number' => 'required',
             'po_number' => 'required',
@@ -188,7 +189,7 @@ class ProductsController extends Controller
     public function edit(Product $product)
     {
         $id = $product->id;
-        return response()->json(Product::whereId($id)->with('rack', 'packs', 'package', 'category')->first(), 200);
+        return response()->json(Product::whereId($id)->with('package', 'category')->first(), 200);
     }
 
     /**

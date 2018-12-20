@@ -47,7 +47,7 @@ trait DataViewer
         }
 
 
-        if (count($request->search_column)) {
+        if ($request->search_column) {
             $query = $query->where(function ($query) use ($request) {
                 if ($request->has('search_input') && $request->search_input) {
                     if ($request->search_operator == 'in' && $request->search_column != 'all') {

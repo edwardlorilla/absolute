@@ -1,6 +1,6 @@
 webpackJsonp([31],{
 
-/***/ 480:
+/***/ 479:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -8,7 +8,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(939)
 }
-var normalizeComponent = __webpack_require__(10)
+var normalizeComponent = __webpack_require__(13)
 /* script */
 var __vue_script__ = __webpack_require__(941)
 /* template */
@@ -418,28 +418,6 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 var getData = function getData(url, page, callback) {
     axios.get('' + url, { params: page }).then(function (response) {
@@ -454,6 +432,7 @@ var getData = function getData(url, page, callback) {
     data: function data() {
         var sortOrders = {};
         return {
+            errors: [],
             date_delivered: '',
             po_number: '',
             pr_number: '',
@@ -892,54 +871,158 @@ var render = function() {
       },
       [
         _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-6" }, [
+          _c("div", { staticClass: "col-12" }, [
             _c("div", { staticClass: "card" }, [
               _c("div", { staticClass: "card-header" }, [
                 _vm._v(
-                  "\n                        Purchase Order Detail\n                    "
+                  "\n                        Medicine Information\n                    "
                 )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-header" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col" }, [
+                    _c("strong", [_vm._v("Generic Name:")]),
+                    _vm._v(
+                      " " +
+                        _vm._s(
+                          _vm.product.medicine_id
+                            ? _vm.product.medicine.name.toUpperCase()
+                            : ""
+                        ) +
+                        "\n                            "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col" }, [
+                    _c("strong", [_vm._v("Dosage:")]),
+                    _vm._v(
+                      " " +
+                        _vm._s(_vm.product.dosage) +
+                        "\n                            "
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col" }, [
+                    _c("strong", [_vm._v("Form:")]),
+                    _vm._v(
+                      " " +
+                        _vm._s(
+                          _vm.product.category_id
+                            ? _vm.product.category.name
+                            : ""
+                        ) +
+                        "\n                            "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col" }, [
+                    _c("strong", [_vm._v("Medication:")]),
+                    _vm._v(
+                      " " +
+                        _vm._s(_vm.product.medication) +
+                        "\n                            "
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col" }, [
+                    _c("strong", [_vm._v("Pack Size:")]),
+                    _vm._v(
+                      " " +
+                        _vm._s(
+                          _vm.product.package_id ? _vm.product.package.name : ""
+                        ) +
+                        "\n                            "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col" }, [
+                    _c("label", { attrs: { for: "unit_cost" } }, [
+                      _vm._v("Total Cost: ")
+                    ]),
+                    _vm._v(
+                      "\n                                " +
+                        _vm._s(_vm.unitCost) +
+                        "\n                            "
+                    )
+                  ])
+                ])
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "card-body" }, [
                 _c("div", { staticClass: "row" }, [
                   _c("div", { staticClass: "col" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "po_number" } }, [
-                        _vm._v("PO Number")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.po_number,
-                            expression: "po_number"
-                          }
-                        ],
-                        staticClass: "form-control form-control-sm",
-                        attrs: {
-                          required: "",
-                          type: "text",
-                          id: "po_number",
-                          name: "po_number",
-                          placeholder: "po_number"
-                        },
-                        domProps: { value: _vm.po_number },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("label", { attrs: { for: "po_number" } }, [
+                          _vm._v("PO Number")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.po_number,
+                              expression: "po_number"
                             }
-                            _vm.po_number = $event.target.value
+                          ],
+                          staticClass: "form-control form-control-sm",
+                          class: _vm.errors.po_number ? "is-invalid" : "",
+                          attrs: {
+                            required: "",
+                            type: "text",
+                            id: "po_number",
+                            name: "po_number",
+                            placeholder: "po_number"
+                          },
+                          domProps: { value: _vm.po_number },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.po_number = $event.target.value
+                            }
                           }
-                        }
-                      })
-                    ]),
+                        }),
+                        _vm._v(" "),
+                        _vm._l(_vm.errors.po_number, function(error) {
+                          return _vm.errors.po_number
+                            ? _c(
+                                "span",
+                                {
+                                  staticClass: "invalid-feedback",
+                                  attrs: { role: "alert" }
+                                },
+                                [
+                                  _c("strong", [
+                                    _vm._v("PO number has already taken")
+                                  ])
+                                ]
+                              )
+                            : _vm._e()
+                        })
+                      ],
+                      2
+                    ),
                     _vm._v(" "),
                     _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "date_delivered" } }, [
-                        _vm._v("Date Delivered")
+                      _c("label", { attrs: { for: "package" } }, [
+                        _vm._v(
+                          "Quantity per " +
+                            _vm._s(
+                              _vm.product.package_id
+                                ? _vm.product.package.name
+                                : "box"
+                            )
+                        )
                       ]),
                       _vm._v(" "),
                       _c("input", {
@@ -947,61 +1030,29 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.date_delivered,
-                            expression: "date_delivered"
+                            value: _vm.quantity_per,
+                            expression: "quantity_per"
                           }
                         ],
                         staticClass: "form-control form-control-sm",
                         attrs: {
                           required: "",
-                          type: "date",
-                          id: "date_delivered",
-                          name: "date_delivered",
-                          placeholder: "Date Delivered"
+                          type: "number",
+                          id: "package",
+                          name: "quantity",
+                          placeholder:
+                            "Quantity per " +
+                            (_vm.product.package_id
+                              ? _vm.product.package.name
+                              : "box")
                         },
-                        domProps: { value: _vm.date_delivered },
+                        domProps: { value: _vm.quantity_per },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.date_delivered = $event.target.value
-                          }
-                        }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "pr_number" } }, [
-                        _vm._v("PR Number")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.pr_number,
-                            expression: "pr_number"
-                          }
-                        ],
-                        staticClass: "form-control form-control-sm",
-                        attrs: {
-                          required: "",
-                          type: "text",
-                          id: "pr_number",
-                          name: "pr_number",
-                          placeholder: "pr_number"
-                        },
-                        domProps: { value: _vm.pr_number },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.pr_number = $event.target.value
+                            _vm.quantity_per = $event.target.value
                           }
                         }
                       })
@@ -1131,224 +1182,6 @@ var render = function() {
                       ],
                       1
                     )
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card" }, [
-              _c("div", { staticClass: "card-body" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "card-title",
-                    staticStyle: { "font-size": "medium" }
-                  },
-                  [
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col" }, [
-                        _c("strong", [_vm._v("Generic Name:")]),
-                        _vm._v(
-                          " " +
-                            _vm._s(
-                              _vm.product.medicine_id
-                                ? _vm.product.medicine.name.toUpperCase()
-                                : ""
-                            ) +
-                            "\n                                "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _c("strong", [_vm._v("Dosage:")]),
-                        _vm._v(
-                          " " +
-                            _vm._s(_vm.product.dosage) +
-                            "\n                                "
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col" }, [
-                        _c("strong", [_vm._v("Form:")]),
-                        _vm._v(
-                          " " +
-                            _vm._s(
-                              _vm.product.category_id
-                                ? _vm.product.category.name
-                                : ""
-                            ) +
-                            "\n                                "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _c("strong", [_vm._v("Medication:")]),
-                        _vm._v(
-                          " " +
-                            _vm._s(_vm.product.medication) +
-                            "\n                                "
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col" }, [
-                        _c("strong", [_vm._v("Pack Size:")]),
-                        _vm._v(
-                          " " +
-                            _vm._s(
-                              _vm.product.package_id
-                                ? _vm.product.package.name
-                                : ""
-                            ) +
-                            "\n                                "
-                        )
-                      ])
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticStyle: { "margin-bottom": "10px" } })
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-6" }, [
-            _c("div", { staticClass: "card" }, [
-              _c("div", { staticClass: "card-header" }, [
-                _vm._v(
-                  "\n                        Medicine Information\n                    "
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col" }, [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "quantity" } }, [
-                        _vm._v("Quantity Delivered")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.quantity,
-                            expression: "quantity"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          required: "",
-                          type: "number",
-                          id: "quantity",
-                          name: "quantity",
-                          placeholder: "Quantity"
-                        },
-                        domProps: { value: _vm.quantity },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.quantity = $event.target.value
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "package" } }, [
-                        _vm._v(
-                          "Quantity per " +
-                            _vm._s(
-                              _vm.product.package_id
-                                ? _vm.product.package.name
-                                : "box"
-                            )
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.quantity_per,
-                            expression: "quantity_per"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          required: "",
-                          type: "number",
-                          id: "package",
-                          name: "quantity",
-                          placeholder:
-                            "Quantity per " +
-                            (_vm.product.package_id
-                              ? _vm.product.package.name
-                              : "box")
-                        },
-                        domProps: { value: _vm.quantity_per },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.quantity_per = $event.target.value
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "unit_cost" } }, [
-                        _vm._v("Unit Cost")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.unit_cost,
-                            expression: "unit_cost"
-                          }
-                        ],
-                        staticClass: "form-control",
-                        attrs: {
-                          required: "",
-                          type: "number",
-                          id: "unit_cost",
-                          name: "unit_cost",
-                          placeholder: "Unit Cost"
-                        },
-                        domProps: { value: _vm.unit_cost },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.unit_cost = $event.target.value
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("label", { attrs: { for: "unit_cost" } }, [
-                        _vm._v("Total Cost: ")
-                      ]),
-                      _vm._v(
-                        "\n                                    " +
-                          _vm._s(_vm.unitCost) +
-                          "\n                                "
-                      )
-                    ])
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col" }, [
@@ -1388,6 +1221,7 @@ var render = function() {
                               {
                                 staticStyle: { width: "100%" },
                                 attrs: {
+                                  size: "small",
                                   filterable: "",
                                   remote: "",
                                   required: "",
@@ -1516,6 +1350,7 @@ var render = function() {
                                 staticStyle: { width: "100%" },
                                 attrs: {
                                   filterable: "",
+                                  size: "small",
                                   remote: "",
                                   required: "",
                                   placeholder: "Please a Dispensing Unit Name",
@@ -1610,6 +1445,110 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "date_delivered" } }, [
+                        _vm._v("Date Delivered")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.date_delivered,
+                            expression: "date_delivered"
+                          }
+                        ],
+                        staticClass: "form-control form-control-sm",
+                        attrs: {
+                          required: "",
+                          type: "date",
+                          id: "date_delivered",
+                          name: "date_delivered",
+                          placeholder: "Date Delivered"
+                        },
+                        domProps: { value: _vm.date_delivered },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.date_delivered = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "quantity" } }, [
+                        _vm._v("Quantity Delivered")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.quantity,
+                            expression: "quantity"
+                          }
+                        ],
+                        staticClass: "form-control form-control-sm",
+                        attrs: {
+                          required: "",
+                          type: "number",
+                          id: "quantity",
+                          name: "quantity",
+                          placeholder: "Quantity"
+                        },
+                        domProps: { value: _vm.quantity },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.quantity = $event.target.value
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "unit_cost" } }, [
+                        _vm._v("Unit Cost")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.unit_cost,
+                            expression: "unit_cost"
+                          }
+                        ],
+                        staticClass: "form-control form-control-sm",
+                        attrs: {
+                          required: "",
+                          type: "number",
+                          id: "unit_cost",
+                          name: "unit_cost",
+                          placeholder: "Unit Cost"
+                        },
+                        domProps: { value: _vm.unit_cost },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.unit_cost = $event.target.value
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
                       _c("label", { attrs: { for: "expiry_date" } }, [
                         _vm._v("Expiry Date")
                       ]),
@@ -1623,7 +1562,7 @@ var render = function() {
                             expression: "expiry_date"
                           }
                         ],
-                        staticClass: "form-control",
+                        staticClass: "form-control form-control-sm",
                         attrs: {
                           type: "date",
                           id: "expiry_date",

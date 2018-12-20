@@ -14,7 +14,7 @@ class DivisionController extends Controller
      */
     public function index()
     {
-        $model = Division::searchPaginateAndOrder();
+        $model = Division::with('user')->searchPaginateAndOrder();
         $columns = Division::$columns;
         return response()
             ->json([
@@ -46,15 +46,15 @@ class DivisionController extends Controller
     public function store(Request $request)
     {
         $input = $this->validate($request, [
-            'name' => 'required',
-            'supply_division' => 'required',
+            'name' => 'required|unique:divisions,name',
+            'user_id' => 'required|unique:divisions,user_id',
             'station' => ''
         ]);
         if (!$input['station']) {
             $input['station'] = $input['name'];
         }
         $division = Division::updateOrCreate(
-            ['id' => $request->id ? $request->id : '', 'name' => $request->name, 'supply_division' => $request->supply_division],
+            ['id' => $request->id ? $request->id : '', 'name' => $request->name, 'user_id' => $request->user_id],
             $input
         );
         return response()->json($division, 200);

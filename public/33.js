@@ -1,10 +1,10 @@
 webpackJsonp([33],{
 
-/***/ 469:
+/***/ 468:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(10)
+var normalizeComponent = __webpack_require__(13)
 /* script */
 var __vue_script__ = __webpack_require__(906)
 /* template */
@@ -371,9 +371,7 @@ var getData = function getData(url, page, callback) {
                 vm.meta.total = data.data.model.total;
 
                 vm.columns = data.data.columns;
-                if (data.page.search_input) {
-                    vm.filters[0].value = data.page.search_input;
-                }
+
                 vm.filters[0].search_prop = vm.search_column; // define search_prop for backend usage.
             }
         }

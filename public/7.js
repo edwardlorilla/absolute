@@ -4,7 +4,7 @@ webpackJsonp([7],{
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(10)
+var normalizeComponent = __webpack_require__(13)
 /* script */
 var __vue_script__ = __webpack_require__(976)
 /* template */
@@ -52,7 +52,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(10)
+var normalizeComponent = __webpack_require__(13)
 /* script */
 var __vue_script__ = __webpack_require__(870)
 /* template */
@@ -159,7 +159,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(10)
+var normalizeComponent = __webpack_require__(13)
 /* script */
 var __vue_script__ = __webpack_require__(873)
 /* template */
@@ -271,7 +271,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__medical_request_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__medical_request_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__medical_supply_vue__ = __webpack_require__(872);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__medical_supply_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__medical_supply_vue__);
-//
 //
 //
 //
@@ -763,7 +762,6 @@ var render = function() {
                     data: _vm.filteredData,
                     total: _vm.meta.total,
                     filters: _vm.filters,
-                    "action-col": _vm.actionCol,
                     "pagination-props": {
                       background: true,
                       pageSize: _vm.query.per_page,

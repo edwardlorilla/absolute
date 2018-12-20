@@ -8,7 +8,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(931)
 }
-var normalizeComponent = __webpack_require__(10)
+var normalizeComponent = __webpack_require__(13)
 /* script */
 var __vue_script__ = __webpack_require__(933)
 /* template */
@@ -541,7 +541,7 @@ var render = function() {
                       _c(
                         "el-form-item",
                         {
-                          class: _vm.errors.product_id
+                          class: _vm.errors.medicine_id
                             ? "is-error is-required"
                             : "",
                           attrs: { label: "Generic" }
@@ -584,9 +584,7 @@ var render = function() {
                                   { staticClass: "el-form-item__error" },
                                   [
                                     _vm._v(
-                                      "\n                                    " +
-                                        _vm._s(error) +
-                                        "\n                                "
+                                      "\n                                    Generic, Medication, Dosage must be unique\n                                "
                                     )
                                   ]
                                 )

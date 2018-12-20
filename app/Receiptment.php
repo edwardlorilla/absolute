@@ -22,9 +22,6 @@ class Receiptment extends Model
             'id' => 'po_number',
             'name' => 'PO #'
         ],[
-            'id' => 'ris_number',
-            'name' => 'RIS #'
-        ],[
             'id' => 'date_release',
             'name' => 'Date Release'
         ],[
@@ -32,7 +29,7 @@ class Receiptment extends Model
             'name' => 'Date Print'
         ],
     ];
-    protected $fillable = ['division_id', 'product_id', 'po_number', 'ris_number', 'date_release', 'date_print'];
+    protected $fillable = ['division_id', 'product_id', 'po_number', 'date_release', 'date_print'];
 
     public function division()
     {
